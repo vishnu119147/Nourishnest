@@ -1,0 +1,1 @@
+A web app for a food delivery service that provides nutritious meals. The app includes a BMI tracker to determine the recommended calorie intake for an individual and a calorie tracker to monitor calories based on the food consumed in previous sessions.
