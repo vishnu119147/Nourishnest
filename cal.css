@@ -1,0 +1,113 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #f8c291, #e77f67);
+    animation: backgroundGradient 10s ease infinite;
+}
+
+.container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes backgroundGradient {
+    0% { background: linear-gradient(to right, #f8c291, #e77f67); }
+    50% { background: linear-gradient(to right, #e77f67, #f8c291); }
+    100% { background: linear-gradient(to right, #f8c291, #e77f67); }
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.section {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.main-section {
+    display: flex;
+    gap: 20px;
+}
+
+.meals-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    max-height: 300px;
+}
+
+.meals-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.meals-list li:last-child {
+    border-bottom: none;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, button:hover {
+    border-color: #007bff;
+}
+
+button {
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chart-section {
+    text-align: center;
+    background: linear-gradient(to bottom, #4ca1af, #c4e0e5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.warning {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.chart-colors {
+    --consumed-color: #FF5733; /* Dark Red for consumed calories */
+    --remaining-color: #D4E157; /* Light Yellow-Green for remaining calories */
+    --protein-color: rgba(255, 206, 86, 0.5);
+    --carbs-color: rgba(75, 192, 192, 0.5);
+    --fats-color: rgba(153, 102, 255, 0.5);
+}

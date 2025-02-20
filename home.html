@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NourishNest - Healthy Food Delivery</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff5e1;
+  color: #333;
+}
+
+.video-section {
+  position: relative;
+  overflow: hidden;
+  height: 60vh;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.background-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
+}
+
+.video-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+.video-text {
+  font-size: 3rem;
+  font-weight: bold;
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+      .header {
+        background-color: #050505;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .cart {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--whiteColor);
+        font-size: 20px;
+        color: var(--primaryColor);
+        text-decoration: none;
+        padding: 0 10px;
+        height: 40px;
+        border-radius: 50%;
+      }
+      .cart:hover {
+        box-shadow: rgba(249, 251, 252, 0.914);
+      }
+      .cart-count {
+        font-size: 13px;
+      }
+      .cart-popup {
+        display: none;
+        position: fixed;
+        height: auto;
+        max-width: 300px;
+        max-height: 300px;
+        top: 15%;
+        right: 1%;
+        background-color: #333;
+        font-size: 14px;
+        padding: 20px;
+        border-radius: 8px;
+        z-index: 100;
+        box-shadow: rgb(14, 98, 83, 0.4) 0px 30px 90px;
+      }
+      .cart-popup.active {
+        display: block;
+      }
+      #cart-items {
+        margin-top: 10px;
+        font-size: 12px;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      #cart-items th {
+        min-width: 50px;
+        background-color: var(--primaryColor);
+        color: var(--whiteColor);
+        padding: 5px;
+      }
+      #cart-items tr:nth-child(even) {
+        background-color: var(--softGreenColor);
+      }
+      #cart-items td {
+        min-width: 50px;
+        padding: 5px;
+        text-align: right;
+      }
+      .cart-popup p {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        padding: 5px;
+        font-weight: 600;
+      }
+      .cart-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 20px;
+        color: var(--blackColor);
+      }
+      .header h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+      }
+      .nav a {
+        text-decoration: none;
+        color: #fff;
+        margin-right: 20px;
+      }
+      .nav a:hover {
+        color: #ccc;
+      }
+      .nav i {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+      .menu {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 20px;
+      }
+      .menu-item {
+        width: 250px;
+        margin: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .menu-item img {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+      }
+      .menu-item h2 {
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+      .menu-item p {
+        font-size: 14px;
+        color: #666;
+      }
+      .add-to-cart {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .add-to-cart {
+        width: 100%;
+        margin: 10px 0 10px 5px;
+        background-color: green;
+        border: none;
+        color: white;
+        border-radius: 8px;
+        padding: 1%;
+        cursor: pointer;
+      }
+      .add-to-cart:hover {
+        background-color: yellow;
+        color: var(--blackColor);
+      }
+      .view-cart {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .view-cart:hover {
+        background-color: #444;
+      }
+      footer {
+  background-color: #0d0d0c;
+  color: #fff;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  margin: 1rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-section h3 {
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.footer-section p, .footer-section a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0.5rem 0;
+  display: block;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.footer-section i {
+  margin-right: 0.5rem;
+}
+
+.clickable-div {
+            text-align: center;
+            background-color: #4CAF50;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .clickable-div:hover {
+            transform: scale(1.05);
+        }
+
+        .clickable-div h1 {
+            color: #fff;
+            font-size: 2.5em;
+        }
+
+        .clickable-div p {
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="nav">
+        <h2>Welcome, {{ username }}!</h2>
+        <a href="/Home">Home</a>
+        <a href="/calo">Calories-tracker</a>
+        <a href="/BMI">BMI-Calculator</a>
+        <a href="/logout" class="logout-link">Logout</a>
+      </div>
+      
+      
+      
+      <i class="fas fa-bars"></i>
+      <div class="profile">
+        <a class="cart" href="#" onclick="toggleCartPopup()"
+          ><ion-icon name="cart-outline"></ion-icon
+        ></a>
+        <span class="cart-count" id="cart-count">0</span>
+      </div>
+
+      <div id="cart-popup" class="cart-popup">
+        <h4>Shopping Cart</h4>
+
+        <table id="cart-items">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th>#</th>
+              <th>Price(₹)</th>
+              <th>Total(₹)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+
+        <p>Total(₹) <span id="cart-total">0.00</span></p>
+
+        <a class="cart-close" onclick="closeCart()"
+          ><ion-icon name="close-circle-outline"></ion-icon
+        ></a>
+        <button class="view-cart" onclick="window.location.href='cart.html'">
+          View Cart
+        </button>
+      </div>
+    </header>
+    <section class="video-section">
+      <video autoplay muted loop class="background-video">
+        <source src="static/images/vi.mp4" type="video/mp4" >
+        Your browser does not support the video tag.
+      </video>
+      <div class="video-overlay">
+        <h1 class="video-text">NOURISHNEST</h1>
+        <p>The cart of wellness...</p>
+      </div>
+    </section>
+    <div class="clickable-div" onclick="navigate()">
+      <h1>Need any Suggestions?</h1>
+      <p>If you want us to suggest food click Here.</p>
+  </div>
+    <main class="menu">
+      <!-- Menu Items -->
+      <div>
+        <div class="menu-item">
+          <img src="static/images/meal1.jpg" alt="Grilled Chicken Salad" />
+          <h2>Grilled Chicken Salad</h2>
+          <p class="detailed-sub">
+            Calories: 350 | Carbs: 25g | Fats: 15g | Protein: 30g
+          </p>
+          <p class="price">₹200.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="350"
+            data-carbs="25"
+            data-fats="15"
+            data-protein="30"
+            data-price="200"
+            onclick="addToCart('Grilled Chicken Salad', 200.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="static/images/meal2.jpeg" alt="Quinoa Bowl" />
+          <h2>Quinoa Bowl</h2>
+          <p class="detailed-sub">
+            Calories: 400 | Carbs: 40g | Fats: 20g | Protein: 25g
+          </p>
+          <p class="price">₹250.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="400"
+            data-carbs="40"
+            data-fats="20"
+            data-protein="25"
+            data-price="250"
+            onclick="addToCart('Quinoa Bowl', 250.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <!-- Add more menu items here -->
+
+        <div class="menu-item">
+          <img src="static/images/meal3.jpeg" alt="Paneer Tikka" />
+          <h2>Paneer Tikka</h2>
+          <p class="detailed-sub">
+            Calories: 320 | Carbs: 15g | Fats: 25g | Protein: 18g
+          </p>
+          <p class="price">₹220.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="320"
+            data-carbs="15"
+            data-fats="25"
+            data-protein="18"
+            data-price="220"
+            onclick="addToCart('Paneer Tikka', 220.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="static/images/meal4" alt="Dal Tadka" />
+          <h2>Dal Tadka</h2>
+          <p class="detailed-sub">
+            Calories: 280 | Carbs: 30g | Fats: 10g | Protein: 12g
+          </p>
+          <p class="price">₹150.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="280"
+            data-carbs="30"
+            data-fats="10"
+            data-protein="12"
+            data-price="150"
+            onclick="addToCart('Dal Tadka', 150.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal5" alt="Chicken Biryani" />
+          <h2>Chicken Biryani</h2>
+          <p class="detailed-sub">
+            Calories: 600 | Carbs: 70g | Fats: 25g | Protein: 35g
+          </p>
+          <p class="price">₹300.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="600"
+            data-carbs="70"
+            data-fats="25"
+            data-protein="35"
+            data-price="300"
+            onclick="addToCart('Chicken Biryani', 300.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal6.jpeg" alt="Rajma Chawal" />
+          <h2>Rajma Chawal</h2>
+          <p class="detailed-sub">
+            Calories: 450 | Carbs: 70g | Fats: 10g | Protein: 15g
+          </p>
+          <p class="price">₹200.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="450"
+            data-carbs="70"
+            data-fats="10"
+            data-protein="15"
+            data-price="200"
+            onclick="addToCart('Rajma Chawal', 200.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal7.jpeg" alt="Aloo Paratha" />
+          <h2>Aloo Paratha</h2>
+          <p class="detailed-sub">
+            Calories: 350 | Carbs: 50g | Fats: 15g | Protein: 8g
+          </p>
+          <p class="price">₹100.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="350"
+            data-carbs="50"
+            data-fats="15"
+            data-protein="8"
+            data-price="100"
+            onclick="addToCart('Aloo Paratha', 100.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal8.jpeg" alt="Palak Paneer" />
+          <h2>Palak Paneer</h2>
+          <p class="detailed-sub">
+            Calories: 300 | Carbs: 20g | Fats: 20g | Protein: 15g
+          </p>
+          <p class="price">₹220.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="300"
+            data-carbs="20"
+            data-fats="20"
+            data-protein="15"
+            data-price="220"
+            onclick="addToCart('Palak Paneer', 220.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal9.webp" alt="Masala Dosa" />
+          <h2>Masala Dosa</h2>
+          <p class="detailed-sub">
+            Calories: 300 | Carbs: 40g | Fats: 10g | Protein: 6g
+          </p>
+          <p class="price">₹120.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="300"
+            data-carbs="40"
+            data-fats="10"
+            data-protein="6"
+            data-price="120"
+            onclick="addToCart('Masala Dosa', 120.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal10.jpg" alt="Baingan Bharta" />
+          <h2>Baingan Bharta</h2>
+          <p class="detailed-sub">
+            Calories: 180 | Carbs: 20g | Fats: 10g | Protein: 4g
+          </p>
+          <p class="price">₹150.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="180"
+            data-carbs="20"
+            data-fats="10"
+            data-protein="4"
+            data-price="150"
+            onclick="addToCart('Baingan Bharta', 150.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal11.jpeg" alt="Fish Curry" />
+          <h2>Fish Curry</h2>
+          <p class="detailed-sub">
+            Calories: 350 | Carbs: 10g | Fats: 20g | Protein: 30g
+          </p>
+          <p class="price">₹280.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="350"
+            data-carbs="10"
+            data-fats="20"
+            data-protein="30"
+            data-price="280"
+            onclick="addToCart('Fish Curry', 280.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal12.jpeg" alt="Egg Curry" />
+          <h2>Egg Curry</h2>
+          <p class="detailed-sub">
+            Calories: 250 | Carbs: 10g | Fats: 15g | Protein: 18g
+          </p>
+          <p class="price">₹180.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="250"
+            data-carbs="10"
+            data-fats="15"
+            data-protein="18"
+            data-price="180"
+            onclick="addToCart('Egg Curry', 180.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal13.jpeg" alt="Mutton Rogan Josh" />
+          <h2>Mutton Rogan Josh</h2>
+          <p class="detailed-sub">
+            Calories: 450 | Carbs: 10g | Fats: 35g | Protein: 25g
+          </p>
+          <p class="price">₹350.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="450"
+            data-carbs="10"
+            data-fats="35"
+            data-protein="25"
+            data-price="350"
+            onclick="addToCart('Mutton Rogan Josh', 350.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal14.jpg" alt="Paneer Butter Masala" />
+          <h2>Paneer Butter Masala</h2>
+          <p class="detailed-sub">
+            Calories: 400 | Carbs: 25g | Fats: 30g | Protein: 15g
+          </p>
+          <p class="price">₹250.00</p>
+          <button
+            class="
+
+add-to-cart"
+            data-calories="400"
+            data-carbs="25"
+            data-fats="30"
+            data-protein="15"
+            data-price="250"
+            onclick="addToCart('Paneer Butter Masala', 250.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal15.jpeg" alt="Chole Bhature" />
+          <h2>Chole Bhature</h2>
+          <p class="detailed-sub">
+            Calories: 550 | Carbs: 60g | Fats: 20g | Protein: 15g
+          </p>
+          <p class="price">₹200.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="550"
+            data-carbs="60"
+            data-fats="20"
+            data-protein="15"
+            data-price="200"
+            onclick="addToCart('Chole Bhature', 200.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+      <div>
+        <div class="menu-item">
+          <img src="images/meal16.webp" alt="Veg Pulao" />
+          <h2>Veg Pulao</h2>
+          <p class="detailed-sub">
+            Calories: 300 | Carbs: 50g | Fats: 10g | Protein: 6g
+          </p>
+          <p class="price">₹150.00</p>
+          <button
+            class="add-to-cart"
+            data-calories="300"
+            data-carbs="50"
+            data-fats="10"
+            data-protein="6"
+            data-price="150"
+            onclick="addToCart('Veg Pulao', 150.00)"
+          >
+            Add to Cart
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <a href="index.html">Home</a>
+          <a href="caltrac.html">Calories Tracker</a>
+          <a href="BMI.html">BMI Calculator</a>
+          
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p>NourishNest</p>
+          <p>Nutrition City,BIET davanagere-577004</p>
+          <p>Email: pradeep.yes.2000@gmail.com</p>
+          <p>Phone: +91 9739190943</p>
+        </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <a href="#"><i class="fab fa-facebook-f"></i> Facebook</a>
+          <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+          <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+          <a href="#"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+    
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script>
+      function toggleCartPopup() {
+        const cartPopup = document.getElementById("cart-popup");
+
+        cartPopup.classList.toggle("active");
+      }
+
+      function closeCart() {
+        const cartPopup = document.getElementById("cart-popup");
+        cartPopup.classList.remove("active");
+      }
+      function addToCart(itemName, itemPrice) {
+    const cartItems = document.getElementById("cart-items").getElementsByTagName("tbody")[0];
+
+    let existingItem = Array.from(cartItems.getElementsByTagName("tr")).find((item) => item.cells[0].textContent === itemName);
+
+    if (existingItem) {
+        let itemCount = parseInt(existingItem.querySelector(".item-count").textContent) + 1;
+        existingItem.querySelector(".item-count").textContent = itemCount;
+
+        let itemTotal = parseFloat(existingItem.querySelector(".item-total").textContent) + parseFloat(itemPrice);
+        existingItem.querySelector(".item-total").textContent = itemTotal.toFixed(2);
+    } else {
+        const newRow = cartItems.insertRow();
+        newRow.innerHTML = `
+            <td>${itemName}</td>
+            <td class='item-count'>1</td>
+            <td class='item-price'>${itemPrice}</td>
+            <td class='item-total'>${itemPrice}</td>
+        `;
+    }
+
+    updateCartCountAndTotal(); // Update cart count and total amount
+}
+
+function updateCartCountAndTotal() {
+    const cartCount = document.getElementById("cart-count");
+    const cartTotal = document.getElementById("cart-total");
+    const cartItems = document.querySelectorAll("#cart-items tbody tr");
+
+    let totalCount = 0;
+    let total = 0;
+
+    cartItems.forEach((item) => {
+        const itemCount = parseInt(item.querySelector(".item-count").textContent);
+        const itemTotal = parseFloat(item.querySelector(".item-total").textContent);
+
+        totalCount += itemCount;
+        total += itemTotal;
+    });
+
+    cartCount.textContent = totalCount;
+    cartTotal.textContent = total.toFixed(2);
+}
+
+    </script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script>
+      let cart = [];
+      let totalCaloriesCount = 0;
+
+      document.addEventListener("click", (e) => {
+        if (
+          e.target.classList.contains("add-to-cart") &&
+          !e.target.classList.contains("added")
+        ) {
+          const menuItem = e.target.parentNode;
+          const item = {
+            name: menuItem.querySelector("h2").textContent,
+            calories: parseInt(e.target.dataset.calories),
+            carbs: parseInt(e.target.dataset.carbs),
+            fats: parseInt(e.target.dataset.fats),
+            proteins: parseInt(e.target.dataset.protein),
+            price: parseInt(e.target.dataset.price),
+          };
+          cart.push(item);
+          totalCaloriesCount += item.calories;
+          localStorage.setItem("cart", JSON.stringify(cart));
+          localStorage.setItem("totalCalories", totalCaloriesCount);
+          e.target.textContent = "Added";
+          e.target.classList.add("added");
+        }
+      });
+      function navigate() {
+            window.location.href = "/suggestion"; // Update with the actual page link
+        }
+    </script>
+  </body>
+</html>

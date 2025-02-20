@@ -1,0 +1,110 @@
+<!-- billing.html (billing page) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NourishNest - Billing</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .billing-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        .billing-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .billing-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .billing-container li {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .billing-container li:last-child {
+            border-bottom: none;
+        }
+        .billing-container li span {
+            font-size: 14px;
+            color: #666;
+        }
+        .billing-container .summary {
+            margin-top: 20px;
+        }
+        .billing-container .summary p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        .print-bill {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .print-bill:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div class="billing-container">
+        <h2>Billing</h2>
+        <ul id="billing-items">
+            <!-- Billing items will be displayed here -->
+        </ul>
+        <div class="summary">
+            <p>Total Calories: <span id="total-calories">0</span></p>
+            <p>Total Amount: ₹<span id="total-amount">0</span></p>
+        </div>
+        <button class="print-bill" onclick="printBill()">Print Bill</button>
+    </div>
+
+    <script>
+        const billingItems = document.getElementById('billing-items');
+        const totalCalories = document.getElementById('total-calories');
+        const totalAmount = document.getElementById('total-amount');
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let totalCaloriesCount = localStorage.getItem('totalCalories') || 0;
+
+        function renderBilling() {
+            cart.forEach((item) => {
+                const billingItem = document.createElement('li');
+                billingItem.innerHTML = `${item.name} - ${item.calories} calories - ${item.proteins}g proteins - ${item.carbs}g carbs - ${item.fats}g fats - Vitamins: ${item.vitamins} - ₹${item.price}`;
+                billingItems.appendChild(billingItem);
+            });
+
+            totalCalories.textContent = totalCaloriesCount;
+            totalAmount.textContent = cart.reduce((acc, item) => acc + item.price, 0);
+        }
+
+        function printBill() {
+            window.print();
+        }
+
+        renderBilling();
+    </script>
+</body>
+</html>

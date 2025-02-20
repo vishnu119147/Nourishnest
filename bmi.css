@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right bottom, #4e54c8, #8f94fb);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .container {
+    max-width: 600px;
+    width: 90%;
+    margin: auto;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #fff;
+  }
+  
+  .calculator {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .input-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+  }
+  
+  label {
+    margin-bottom: 5px;
+  }
+  
+  input[type="number"],
+  select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px;
+    background-color: #4e54c8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #8f94fb;
+  }
+  
+  #results {
+    margin-top: 20px;
+  }
+  
+  #results p {
+    margin-bottom: 10px;
+  }
+  
+  #results p:last-child {
+    margin-bottom: 0;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .input-fields {
+      grid-template-columns: 1fr;
+    }
+  }
+  

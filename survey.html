@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Interest Survey</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .survey-container {
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .answer {
+            background-color: #f2f2f2;
+            margin: 5px 0;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .answer:hover {
+            background-color: #ddd;
+        }
+
+        .answer.selected {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="survey-container">
+    <div class="question" data-question-id="1">
+        <h3>1. What type of cuisine do you prefer?</h3>
+        <div class="answer" data-answer="North Indian">Indian</div>
+        <div class="answer" data-answer="Italian">Italian</div>
+        <div class="answer" data-answer="Chinese">Chinese</div>
+        <div class="answer" data-answer="Mexican">Mexican</div>
+    </div>
+
+    <div class="question" data-question-id="2">
+        <h3>2. What's your preferred level of spiciness?</h3>
+        <div class="answer" data-answer="Mild">Mild</div>
+        <div class="answer" data-answer="Medium">Medium</div>
+        <div class="answer" data-answer="Hot">Hot</div>
+    </div>
+
+    <button class="submit-btn" onclick="submitSurvey()">Submit</button>
+</div>
+
+<script>
+    const answers = {};
+
+    document.querySelectorAll('.answer').forEach(answer => {
+        answer.addEventListener('click', function() {
+            const questionDiv = this.closest('.question');
+            const questionId = questionDiv.getAttribute('data-question-id');
+
+            // Remove 'selected' class from previously selected answer
+            questionDiv.querySelectorAll('.answer').forEach(ans => ans.classList.remove('selected'));
+
+            // Add 'selected' class to current answer
+            this.classList.add('selected');
+
+            // Store the selected answer in the answers object
+            answers[questionId] = this.getAttribute('data-answer');
+        });
+    });
+
+    function submitSurvey() {
+        // Send selected answers to the backend
+        fetch('/submit-survey', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(answers),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Survey submitted successfully!');
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+
+</body>
+</html>

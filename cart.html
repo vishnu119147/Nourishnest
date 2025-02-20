@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NourishNest - Cart</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f5f5f5;
+        }
+       .cart {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+       .cart h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+       .cart ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+       .cart li {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+       .cart li:last-child {
+            border-bottom: none;
+        }
+       .cart li span {
+            font-size: 14px;
+            color: #666;
+        }
+       .delete-item {
+            background-color: #ff4d4d;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+       .delete-item:hover {
+            background-color: #ff1a1a;
+        }
+       .billing {
+            margin-top: 20px;
+        }
+       .billing h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+       .billing label {
+            display: block;
+            margin-bottom: 10px;
+        }
+       .billing input[type="radio"] {
+            margin-right: 10px;
+        }
+       .billing button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+       .billing button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div id="cart-details" class="cart">
+        <h2>Cart</h2>
+        <ul id="cart-items">
+            <!-- Cart items will be displayed here -->
+        </ul>
+        <p class="calories-tracker">Total Calories: <span id="total-calories">0</span></p>
+        <div class="billing">
+            <h2>Billing</h2>
+            <label>Payment Type:</label>
+            <input type="radio" name="payment-type" value="cash-on-delivery"> Cash on Delivery
+            <input type="radio" name="payment-type" value="upi"> UPI
+            <br><br>
+            
+            <label>Total Amount: ₹<span id="total-amount">0</span></label>
+            <button type="submit" onclick="placeOrder()" id="place-order">Place Order</button>
+        </div>
+    </div>
+
+    <script>
+        const cartItems = document.getElementById('cart-items');
+const totalCalories = document.getElementById('total-calories');
+const totalAmount = document.getElementById('total-amount');
+
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let totalCaloriesCount = localStorage.getItem('totalCalories') || 0;
+
+function renderCart() {
+    cartItems.innerHTML = '';
+    let totalAmountValue = 0;
+
+    cart.forEach((item, index) => {
+        const cartItem = document.createElement('li');
+        cartItem.innerHTML = `${item.name} - ${item.calories} calories - ${item.proteins}g proteins - ${item.carbs}g carbs - ${item.fats}g fats  - ₹${item.price} 
+                              <button class="delete-item" data-index="${index}">Delete</button>`;
+        cartItems.appendChild(cartItem);
+        totalAmountValue += item.price;
+    });
+
+    totalCalories.textContent = totalCaloriesCount;
+    totalAmount.textContent = totalAmountValue.toFixed(2);
+}
+
+function placeOrder() {
+    const paymentType = document.querySelector('input[name="payment-type"]:checked');
+    if (!paymentType) {
+        alert('Please select a payment type.');
+        return;
+    }
+
+    if (paymentType.value === 'cash-on-delivery') {
+        confirmOrder();
+    } else if (paymentType.value === 'upi') {
+        alert('Redirecting to UPI payment page...');
+        window.location.href = 'online_transaction.html'; // Redirect to the UPI payment page
+    } else {
+        alert('Your order has been placed.');
+    }
+}
+
+function confirmOrder() {
+    alert('Your order has been confirmed. Redirecting to billing...');
+    window.location.href = 'billing.html'; // Redirect to the billing page
+}
+
+cartItems.addEventListener('click', (e) => {
+    if (e.target.classList.contains('delete-item')) {
+        const index = e.target.dataset.index;
+        totalCaloriesCount -= cart[index].calories;
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('totalCalories', totalCaloriesCount);
+        renderCart();
+    }
+});
+
+renderCart();
+
+    </script>
+</body>
+</html>
